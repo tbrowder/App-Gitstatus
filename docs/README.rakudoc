@@ -33,8 +33,8 @@ synchronized on multiple hosts.
 
 =head1 CREDITS
 
-A big tip of my hat to Raku prolific module author and major core developer, 
-Elizabeth Mattijsen (AKA, @lizmat) 
+A big tip of my hat to prolific Raku module author and major core developer, 
+Elizabeth Mattijsen (AKA @lizmat) 
 for her very useful C<Git::Status> module which this module
 depends upon.
 
