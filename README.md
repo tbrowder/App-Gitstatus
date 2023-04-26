@@ -16,7 +16,7 @@ Usage: git-status-check <dir> [...options...]
 
 Checks and reports details of the Git status of all directories 
 under directory 'dir' which are 'dirty' (i.e, having a non-zero
-C<Git::Status>).
+'Git::Status').
 
 (Note <dir> must be the first argument entered.)
 
