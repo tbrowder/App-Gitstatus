@@ -7,6 +7,8 @@ to help maintain a directory of Git repositories
 
 =head1 SYNOPSIS
 
+Execute C<git-status-check> without arguments to see its capabilities:
+
 =begin code :lang<raku>
 $ git-status-check # OUTPUT: 
 Usage: git-status-check <dir> [...options...]

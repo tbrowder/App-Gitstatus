@@ -8,6 +8,8 @@ NAME
 SYNOPSIS
 ========
 
+Execute `git-status-check` without arguments to see its capabilities:
+
 ```raku
 $ git-status-check # OUTPUT: 
 Usage: git-status-check <dir> [...options...]
