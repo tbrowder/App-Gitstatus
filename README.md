@@ -34,7 +34,7 @@ The installed program will be very useful for any user who has to maintain many 
 CREDITS
 =======
 
-A big tip of my hat to Raku prolific module author and major core developer, Elizabeth Mattijsen (AKA, @lizmat) for her very useful `Git::Status` module which this module depends upon.
+A big tip of my hat to prolific Raku module author and major core developer, Elizabeth Mattijsen (AKA @lizmat) for her very useful `Git::Status` module which this module depends upon.
 
 AUTHOR
 ======
