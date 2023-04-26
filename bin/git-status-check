@@ -1,0 +1,115 @@
+#!/usr/bin/env raku
+
+use File::Find;
+use Git::Status;
+
+if not @*ARGS.elems {
+    print qq:to/HERE/;
+    Usage: {$*PROGRAM.basename} <dir> [...options...]
+
+    Checks and reports details of the Git status of all directories 
+    under directory 'dir' which are 'dirty' (i.e, having a non-zero
+    Git::Status.
+
+    (Note <dir> must be the first argument entered.)
+
+    Options:
+      first      - report the first directory
+      last       - report the last directory
+      ignore=/X/ - ignore directory names satisfying regex /X/
+      select=/X/ - select directory names satisfying regex /X/
+      debug
+
+    HERE
+    exit;
+}
+
+my $dir = @*ARGS.shift;
+if not $dir.IO.d {
+    die "FATAL: '$dir' is not a directory.";
+}
+
+my $debug  = 0;
+my $first  = 0;
+my $last   = 0;
+my $ignore = 0;
+my $select = 0;
+my $regex;
+
+for @*ARGS {
+    when /^d/ { ++$debug }
+    when /^f/ { ++$first }
+    when /^l/ { ++$last  }
+    when /^i[gnore]? '=/' (\N+) '/' $/ {
+        $regex = ~$0;
+        ++$ignore;
+    }
+    when /^s[elect]? '=/' (\N+) '/' $/ {
+        $regex = ~$0;
+        ++$select;
+    }
+    default {
+        die  "FATAL: Unknown arg '$_'";
+    }
+}
+
+if $debug {
+   say "DEBUG: regex = '$regex'";
+}
+
+my @search-dirs;
+my @dirs;
+if $select {
+   @search-dirs = find :$dir, :type('dir'), :name(/<$regex>/);
+}
+elsif $ignore {
+   @search-dirs = find :$dir, :type('dir'), :exclude(/<$regex>/);
+}
+else {
+   @search-dirs = find :$dir, :type('dir');
+}
+
+if $first and @search-dirs {
+   @dirs.push: @search-dirs.head;
+}
+elsif $last and @search-dirs  {
+   @dirs.push: @search-dirs.tail;
+}
+else {
+   @dirs = @search-dirs;
+}
+
+my $nd = @dirs.elems;
+if not $nd {
+   say "Found $nd directories under directory '$dir'.";
+   exit;
+}
+
+my $ng = 0;
+my @dirty;
+for @dirs -> $d {
+    next unless "$d/.git".IO.d;
+    my $gs = Git::Status.new: :directory($d);
+    # possible results
+    my @add = $gs.added;
+    my @del = $gs.deleted;
+    my @mod = $gs.modified;
+    my @untrack = $gs.untracked;
+    if $gs.gist {
+        say "  Found git repo at dir '$d'";
+        say "    added    : $_" for @add;
+        say "    deleted  : $_" for @del;
+        say "    modified : $_" for @mod;
+        say "    untracked: $_" for @untrack;
+        ++$ng;
+        say "    directory is dirty";
+        @dirty.push: $d;
+    }
+}
+if not $ng {
+     say "All directories are clean repos";
+}
+else {
+     say "Found $ng dirty git repos:";
+     say "  $_" for @dirty;
+}

@@ -6,8 +6,10 @@
   "build-depends": [
   ],
   "depends": [
+    "Git::Status",
+    "File::Find"
   ],
-  "description": "blah blah blah",
+  "description": "Provides a program, 'git-status-check', to help maintain a directory of Git repositories",
   "license": "Artistic-2.0",
   "name": "App::Gitstatus",
   "perl": "6.d",
@@ -16,10 +18,11 @@
   },
   "resources": [
   ],
-  "source-url": "",
+  "source-url": "https://github.com/tbrowder/App-Gitstatus.git",
   "tags": [
   ],
   "test-depends": [
+    "Proc::Easier"
   ],
   "version": "0.0.1"
 }
