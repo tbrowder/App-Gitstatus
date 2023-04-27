@@ -14,7 +14,10 @@
   "name": "App::Gitstatus",
   "perl": "6.d",
   "provides": {
-    "App::Gitstatus": "lib/App/Gitstatus.rakumod"
+    "App::Branch": "lib/App/Branch.rakumod",
+    "App::Gitstatus": "lib/App/Gitstatus.rakumod",
+    "App::Stash": "lib/App/Stash.rakumod",
+    "App::Status": "lib/App/Status.rakumod"
   },
   "resources": [
   ],
