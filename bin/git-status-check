@@ -7,15 +7,15 @@ if not @*ARGS.elems {
     print qq:to/HERE/;
     Usage: {$*PROGRAM.basename} <dir> [...options...]
 
-    Checks and reports details of the Git status of all directories 
-    under directory 'dir' which are 'dirty' (i.e, having a non-zero
-    'Git::Status').
-
-    (Note <dir> must be the first argument entered.)
+    Checks the Git status of all directories under
+    directory 'dir' which are 'dirty' (i.e., having
+    a non-zero 'Git::Status') and lists those
+    directories.
 
     Options:
-      first      - report the first directory
-      last       - report the last directory
+      all        - report details of all dirty directories
+      first      - report the first directory only
+      last       - report the last directory only
       ignore=/X/ - ignore directory names satisfying regex /X/
       select=/X/ - select directory names satisfying regex /X/
       debug
@@ -26,27 +26,30 @@ if not @*ARGS.elems {
 
 my $dir = @*ARGS.shift;
 if not $dir.IO.d {
-    die "FATAL: '$dir' is not a directory.";
+    die "FATAL: The first argument '$dir' is not a directory as required.";
 }
 
-my $debug  = 0;
-my $first  = 0;
-my $last   = 0;
-my $ignore = 0;
-my $select = 0;
+my $debug   = 0;
+my $details = 0;
+my $all     = 0;
+my $first   = 0;
+my $last    = 0;
+my $ignore  = 0;
+my $select  = 0;
 my $regex;
 
 for @*ARGS {
-    when /^d/ { ++$debug }
-    when /^f/ { ++$first }
-    when /^l/ { ++$last  }
+    when /^d/ { ++$debug             }
+    when /^a/ { ++$all; ++$details   }
+    when /^f/ { ++$first; ++$details }
+    when /^l/ { ++$last; ++$details  }
     when /^i[gnore]? '=/' (\N+) '/' $/ {
         $regex = ~$0;
-        ++$ignore;
+        ++$ignore; ++$details;
     }
     when /^s[elect]? '=/' (\N+) '/' $/ {
         $regex = ~$0;
-        ++$select;
+        ++$select; ++$details;
     }
     default {
         die  "FATAL: Unknown arg '$_'";
@@ -91,11 +94,14 @@ for @dirs -> $d {
     next unless "$d/.git".IO.d;
     my $gs = Git::Status.new: :directory($d);
     # possible results
-    my @add = $gs.added;
-    my @del = $gs.deleted;
-    my @mod = $gs.modified;
+    my @add     = $gs.added;
+    my @del     = $gs.deleted;
+    my @mod     = $gs.modified;
     my @untrack = $gs.untracked;
     if $gs.gist {
+        @dirty.push: $d;
+        next unless $details;
+
         say "  Found git repo at dir '$d'";
         say "    added    : $_" for @add;
         say "    deleted  : $_" for @del;
@@ -103,7 +109,6 @@ for @dirs -> $d {
         say "    untracked: $_" for @untrack;
         ++$ng;
         say "    directory is dirty";
-        @dirty.push: $d;
     }
 }
 if not $ng {

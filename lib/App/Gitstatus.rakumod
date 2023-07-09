@@ -1,3 +1,1 @@
-unit class App::Gitstatus;
-
-
+unit module App::Gitstatus;
