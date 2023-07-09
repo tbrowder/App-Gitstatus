@@ -1,6 +1,8 @@
 Revision history for App-Gitstatus
 
 {{$NEXT}}
+
+0.0.2  2023-07-09T14:02:15-05:00
     - Cleaned up text and documentation
     - Eliminated one test file
     - Moved most code to the /lib directory
