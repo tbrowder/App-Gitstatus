@@ -2,6 +2,7 @@
 
 use File::Find;
 use Git::Status;
+use App::Gitstatus;
 
 if not @*ARGS.elems {
     print qq:to/HERE/;
@@ -40,9 +41,9 @@ my $regex;
 
 for @*ARGS {
     when /^d/ { ++$debug             }
-    when /^a/ { ++$all; ++$details   }
+    when /^a/ { ++$all;   ++$details }
     when /^f/ { ++$first; ++$details }
-    when /^l/ { ++$last; ++$details  }
+    when /^l/ { ++$last;  ++$details }
     when /^i[gnore]? '=/' (\N+) '/' $/ {
         $regex = ~$0;
         ++$ignore; ++$details;
