@@ -10,4 +10,3 @@ lives-ok {
     $res = cmd $exec-args;
 }
 
-# vim: expandtab shiftwidth=4

@@ -11,18 +11,18 @@ SYNOPSIS
 Execute `git-status-check` without arguments to see its capabilities:
 
 ```raku
-$ git-status-check # OUTPUT: 
+$ git-status-check # OUTPUT:
 Usage: git-status-check <dir> [...options...]
 
-Checks and reports details of the Git status of all directories 
-under directory 'dir' which are 'dirty' (i.e, having a non-zero
-'Git::Status').
-
-(Note <dir> must be the first argument entered.)
+Checks the Git status of all directories under
+directory 'dir' which are 'dirty' (i.e., having
+a non-zero 'Git::Status') and lists those
+directories.
 
 Options:
-  first      - report the first directory
-  last       - report the last directory
+  all        - report details of all dirty directories
+  first      - report the first directory only
+  last       - report the last directory only
   ignore=/X/ - ignore directory names satisfying regex /X/
   select=/X/ - select directory names satisfying regex /X/
   debug
